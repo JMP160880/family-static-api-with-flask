@@ -25,18 +25,46 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
+
+# OBTENER TODOS LOS MIEMBROS
 @app.route('/members', methods=['GET'])
 def handle_hello():
-
-    # this is how you can use the Family datastructure by calling its methods
     members = jackson_family.get_all_members()
     response_body = {
-        "hello": "world",
         "family": members
     }
+    return jsonify(response_body)
 
+# AÑADIR UN MIEMBRO
+@app.route('/members', methods=['POST'])
+def add_member():
+    request_body = request.json
+    # this is how you can use the Family datastructure by calling its methods
+    members = jackson_family.add_member(request_body)
+    response_body = {
+       
+        "family": members
+    }   
+    return jsonify(response_body)
+# @app.route('/user', methods=['POST'])
+# def create_user():
+#     request_body=request.json
+#     user_query = User.query.filter_by(email=request_body["email"]).first()
+#     if user_query is None:
 
-    return jsonify(response_body), 200
+#         user = User(email=request_body["email"], 
+#         password=request_body["password"],name=request_body["name"])
+#         db.session.add(user)
+#         db.session.commit()
+  
+#         response_body = {
+#             "msg": "El usuario ha sido creado con éxito",
+
+#         }
+
+#         return jsonify(response_body), 200
+#     else:
+#         return jsonify({"msg":"Usuario ya existe"}), 400
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':

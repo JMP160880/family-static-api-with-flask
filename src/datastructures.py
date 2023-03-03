@@ -35,16 +35,19 @@ class FamilyStructure:
 
     def add_member(self, member):
         # fill this method and update the return
-        return FamilyStructure.self_members.append(member)
+        self._members.append(member)
+        return self._members
         
 
     def delete_member(self, id):
         # fill this method and update the return
-        pass
+        self._members.pop(id)
+        return self._members
 
     def get_member(self, id):
         # fill this method and update the return
-        pass
+        self._members.pop(id)
+        return self._members
 
     # this method is done, it returns a list with all the family members
     def get_all_members(self):
