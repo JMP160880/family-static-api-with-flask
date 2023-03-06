@@ -39,32 +39,57 @@ def handle_hello():
 @app.route('/members', methods=['POST'])
 def add_member():
     request_body = request.json
+    
+    member = {
+        id: request_body["id"],
+        "first_name": request_body["first_name"],
+        "last_name": "Jackson",
+        "age": request_body["age"],
+        "lucky_numbers": request_body["lucky_numbers"]
+    }
+        
     # this is how you can use the Family datastructure by calling its methods
     members = jackson_family.add_member(request_body)
     response_body = {
        
         "family": members
     }   
+    
     return jsonify(response_body)
-# @app.route('/user', methods=['POST'])
-# def create_user():
-#     request_body=request.json
-#     user_query = User.query.filter_by(email=request_body["email"]).first()
-#     if user_query is None:
 
-#         user = User(email=request_body["email"], 
-#         password=request_body["password"],name=request_body["name"])
-#         db.session.add(user)
-#         db.session.commit()
-  
-#         response_body = {
-#             "msg": "El usuario ha sido creado con éxito",
+@app.route('/members/<int:member_id>', methods=['GET'])
+def get_member_by_id(member_id):
 
-#         }
+    # this is how you can use the Family datastructure by calling its methods
+    member = jackson_family.get_member(member_id)
+    
+    print(member)
+    
+    response_body = {
+            "family member": member
+        }
+     
+    if member:    
+        return jsonify(response_body), 200
+    
+    else:
+        return jsonify("Not a member of the family")
+    
+@app.route('/members/<int:member_id>', methods=['DELETE'])
+def delete_member(member_id):
 
-#         return jsonify(response_body), 200
-#     else:
-#         return jsonify({"msg":"Usuario ya existe"}), 400
+    # this is how you can use the Family datastructure by calling its methods
+    member = jackson_family.delete_member(member_id)
+    
+    response_body = {
+            "msg" : "Member deleted"
+        }
+     
+    if member:    
+        return jsonify(response_body), 200
+    
+    else:
+        return jsonify("Not a member of the family")
 
 # this only runs if `$ python src/app.py` is executed
 if __name__ == '__main__':
